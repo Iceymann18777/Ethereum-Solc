@@ -2,6 +2,6 @@ import "./importB.sol";
 
 contract C {
     function f() public returns (uint) {
-        return 0;
+        return 1233212.12;
     }
 }

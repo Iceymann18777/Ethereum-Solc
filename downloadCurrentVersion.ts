@@ -8,8 +8,9 @@ import * as fs from 'fs';
 import { https } from 'follow-redirects';
 import * as MemoryStream from 'memorystream';
 import { keccak256 } from 'js-sha3';
+import { URL } from 'url';
 
-function getVersionList (cb) {
+function getVersionList(cb: { (list: any): void; (arg0: any): void; }) {
   console.log('Retrieving available version list...');
 
   const mem = new MemoryStream(null, { readable: false });
@@ -25,7 +26,7 @@ function getVersionList (cb) {
   });
 }
 
-function downloadBinary (outputName, version, expectedHash) {
+function downloadBinary(outputName: string | number | Buffer | URL, version: string, expectedHash: string) {
   console.log('Downloading version', version);
 
   // Remove if existing
@@ -61,11 +62,11 @@ function downloadBinary (outputName, version, expectedHash) {
 
 console.log('Downloading correct solidity binary...');
 
-getVersionList(function (list) {
+getVersionList(function (list: string) {
   list = JSON.parse(list);
   const wanted = pkg.version.match(/^(\d+\.\d+\.\d+)$/)[1];
   const releaseFileName = list.releases[wanted];
-  const expectedFile = list.builds.filter(function (entry) { return entry.path === releaseFileName; })[0];
+  const expectedFile = list.builds.filter(function (entry: { path: any; }) { return entry.path === releaseFileName; })[0];
   if (!expectedFile) {
     console.log('Version list is invalid or corrupted?');
     process.exit(1);
